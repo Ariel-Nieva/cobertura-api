@@ -43,7 +43,7 @@ console.log('URL:', `https://sys.tomodat.com.br/tomodat/api/clients/viability/${
     const tomodatUrl = `https://sys.tomodat.com.br/tomodat/api/clients/viability/${lat}/${lon}/${RADIO_METROS}`;
     const tomodatRes = await fetch(tomodatUrl, {
       headers: {
-        'Authorization': `Bearer ${TOMODAT_TOKEN}`,
+        'Authorization': TOMODAT_TOKEN
         'Content-Type': 'application/json'
       }
     });
