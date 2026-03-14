@@ -59,16 +59,19 @@ const cajas = JSON.parse(cajasRaw);
 
     const hayCobertura = cajasConPuertos.length > 0;
 
-    return res.status(200).json({
-      ok: true,
-      hayCobertura,
-      direccionEncontrada: display_name,
-      coordenadas: { lat, lon },
-      cajasDisponibles: cajasConPuertos.length,
-      mensaje: hayCobertura
-        ? `✅ ¡Buenas noticias! Tenemos cobertura en *${display_name}*. Un asesor se va a contactar con vos a la brevedad para coordinar la instalación.`
-        : `❌ Por el momento no tenemos cobertura en *${display_name}*. Te anotamos en lista de espera y te avisamos cuando lleguemos a tu zona.`
-    });
+return res.status(200).json({
+  ok: true,
+  hayCobertura,
+  direccionEncontrada: display_name,
+  coordenadas: { lat, lon },
+  cajasDisponibles: cajasConPuertos.length,
+  cajasRaw: cajas,
+  token_presente: !!TOMODAT_TOKEN,
+  url_consultada: tomodatUrl,
+  mensaje: hayCobertura
+    ? `✅ ¡Buenas noticias! Tenemos cobertura en *${display_name}*. Un asesor se va a contactar con vos a la brevedad para coordinar la instalación.`
+    : `❌ Por el momento no tenemos cobertura en *${display_name}*. Te anotamos en lista de espera y te avisamos cuando lleguemos a tu zona.`
+});
 
   } catch (error) {
     return res.status(500).json({
