@@ -1,5 +1,5 @@
 const TOMODAT_TOKEN = process.env.TOMODAT_TOKEN;
-const RADIO_METROS = 300;
+const RADIO_METROS = 600;
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
