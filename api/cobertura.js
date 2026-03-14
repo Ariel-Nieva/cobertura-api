@@ -48,7 +48,10 @@ console.log('URL:', `https://sys.tomodat.com.br/tomodat/api/clients/viability/${
       }
     });
 
-    const cajas = await tomodatRes.json();
+    const cajasRaw = await tomodatRes.text();
+console.log('Tomodat status:', tomodatRes.status);
+console.log('Tomodat response:', cajasRaw);
+const cajas = JSON.parse(cajasRaw);
 
     const cajasConPuertos = Array.isArray(cajas)
       ? cajas.filter(c => c.splitters?.some(s => s.free_ports_number > 0))
