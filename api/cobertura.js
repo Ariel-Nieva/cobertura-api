@@ -37,21 +37,16 @@ export default async function handler(req, res) {
 
     const { lat, lon, display_name } = geoData[0];
 
-    console.log('Token:', TOMODAT_TOKEN ? 'OK' : 'UNDEFINED');
-console.log('URL:', `https://sys.tomodat.com.br/tomodat/api/clients/viability/${lat}/${lon}/${RADIO_METROS}`);
-
     const tomodatUrl = `https://sys.tomodat.com.br/tomodat/api/clients/viability/${lat}/${lon}/${RADIO_METROS}`;
     const tomodatRes = await fetch(tomodatUrl, {
       headers: {
-        'Authorization': TOMODAT_TOKEN
+        'Authorization': TOMODAT_TOKEN,
         'Content-Type': 'application/json'
       }
     });
 
     const cajasRaw = await tomodatRes.text();
-console.log('Tomodat status:', tomodatRes.status);
-console.log('Tomodat response:', cajasRaw);
-const cajas = JSON.parse(cajasRaw);
+    const cajas = JSON.parse(cajasRaw);
 
     const cajasConPuertos = Array.isArray(cajas)
       ? cajas.filter(c => c.splitters?.some(s => s.free_ports_number > 0))
@@ -59,23 +54,21 @@ const cajas = JSON.parse(cajasRaw);
 
     const hayCobertura = cajasConPuertos.length > 0;
 
-return res.status(200).json({
-  ok: true,
-  hayCobertura,
-  direccionEncontrada: display_name,
-  coordenadas: { lat, lon },
-  cajasDisponibles: cajasConPuertos.length,
-  cajasRaw: cajas,
-  token_presente: !!TOMODAT_TOKEN,
-  url_consultada: tomodatUrl,
-  mensaje: hayCobertura
-    ? `✅ ¡Buenas noticias! Tenemos cobertura en *${display_name}*. Un asesor se va a contactar con vos a la brevedad para coordinar la instalación.`
-    : `❌ Por el momento no tenemos cobertura en *${display_name}*. Te anotamos en lista de espera y te avisamos cuando lleguemos a tu zona.`
-});
+    return res.status(200).json({
+      ok: true,
+      hayCobertura,
+      direccionEncontrada: display_name,
+      coordenadas: { lat, lon },
+      cajasDisponibles: cajasConPuertos.length,
+      mensaje: hayCobertura
+        ? `✅ ¡Buenas noticias! Tenemos cobertura en *${display_name}*. Un asesor se va a contactar con vos a la brevedad para coordinar la instalación.`
+        : `❌ Por el momento no tenemos cobertura en *${display_name}*. Te anotamos en lista de espera y te avisamos cuando lleguemos a tu zona.`
+    });
 
   } catch (error) {
     return res.status(500).json({
       ok: false,
+      error: error.message,
       mensaje: '⚠️ Hubo un error al verificar la cobertura. Por favor intentá de nuevo.'
     });
   }
