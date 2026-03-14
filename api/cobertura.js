@@ -22,7 +22,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(direccion)}&format=json&limit=1`;
+    const direccionCompleta = `${direccion}, Partido de La Matanza, Buenos Aires, Argentina`;
+const geoUrl = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(direccionCompleta)}&format=json&limit=1`;
     const geoRes = await fetch(geoUrl, {
       headers: { 'User-Agent': 'CoberturaBot/1.0' }
     });
