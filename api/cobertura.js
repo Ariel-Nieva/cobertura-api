@@ -37,6 +37,9 @@ export default async function handler(req, res) {
 
     const { lat, lon, display_name } = geoData[0];
 
+    console.log('Token:', TOMODAT_TOKEN ? 'OK' : 'UNDEFINED');
+console.log('URL:', `https://sys.tomodat.com.br/tomodat/api/clients/viability/${lat}/${lon}/${RADIO_METROS}`);
+
     const tomodatUrl = `https://sys.tomodat.com.br/tomodat/api/clients/viability/${lat}/${lon}/${RADIO_METROS}`;
     const tomodatRes = await fetch(tomodatUrl, {
       headers: {
